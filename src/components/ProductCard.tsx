@@ -55,7 +55,7 @@ export default function ProductCard({ cart, setCart, products }: Props) {
 
   return (
     <>
-      <h1 className="text-3xl font-bold underline">Desserts</h1>
+      <h1 className="text-3xl font-bold" style={{padding: "20px"}}>Desserts</h1>
       <div
         style={{
           display: "grid",
@@ -125,11 +125,27 @@ export default function ProductCard({ cart, setCart, products }: Props) {
                     }}
                   >
                     <IconButton onClick={() => handleDecrease(item.id)} sx={{ color: "white" }}>
-                      <RemoveIcon />
+                      <RemoveIcon                       
+                      sx={{
+                        borderRadius: "50%",
+                        border: "1px solid white",
+                        "&:hover": {
+                          backgroundColor: "white",
+                          color: "#c2410c",
+                        },
+                      }}/>
                     </IconButton>
                     <Typography sx={{ color: "white", mx: 1 }}>{quantity}</Typography>
                     <IconButton onClick={() => handleIncrease(item.id)} sx={{ color: "white" }}>
-                      <AddIcon />
+                      <AddIcon 
+                                            sx={{
+                        borderRadius: "50%",
+                        border: "1px solid white",
+                        "&:hover": {
+                          backgroundColor: "white",
+                          color: "#c2410c",
+                        },
+                      }}/>
                     </IconButton>
                   </Box>
                 )}
