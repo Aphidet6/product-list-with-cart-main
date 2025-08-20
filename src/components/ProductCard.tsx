@@ -1,3 +1,4 @@
+import React from "react";
 import {
   Card,
   CardContent,
@@ -32,6 +33,12 @@ type Props = {
   products: Product[];
 };
 
+const COLORS = {
+  red: "hsl(14, 86%, 42%)", // primary red
+  rose50: "hsl(20, 50%, 98%)", // background
+  textDark: "hsl(14, 65%, 9%)",
+};
+
 export default function ProductCard({ cart, setCart, products }: Props) {
   const handleAdd = (id: number) => {
     setCart((prev) => ({ ...prev, [id]: (prev[id] || 0) + 1 }));
@@ -55,13 +62,19 @@ export default function ProductCard({ cart, setCart, products }: Props) {
 
   return (
     <>
-      <h1 className="text-3xl font-bold" style={{padding: "20px"}}>Desserts</h1>
-      <div
-        style={{
+      <Typography
+        component="h1"
+        sx={{ fontSize: 24, fontWeight: 700, color: COLORS.textDark, px: 2, py: 1 }}
+      >
+        Desserts
+      </Typography>
+
+      <Box
+        sx={{
           display: "grid",
           gridTemplateColumns: "repeat(auto-fill, minmax(250px, 1fr))",
-          gap: "16px",
-          padding: "20px",
+          gap: 3,
+          p: 2,
         }}
       >
         {products.map((item: any) => {
@@ -80,28 +93,49 @@ export default function ProductCard({ cart, setCart, products }: Props) {
           const quantity = cart[item.id] || 0;
 
           return (
-            <Card key={item.id} sx={{ borderRadius: "16px", overflow: "hidden" }}>
+            <Card
+              key={item.id}
+              elevation={0}
+              sx={{
+                borderRadius: 2,
+                overflow: "visible",
+                backgroundColor: "transparent",
+                boxShadow: "none",
+                p: 0,
+              }}
+            >
               <Box sx={{ position: "relative" }}>
                 <CardMedia
                   component="img"
                   height="200"
                   image={resolvedDesktop ?? (desktopPath as string) ?? ""}
                   alt={item.name}
+                  sx={{
+                    border: quantity > 0 ? `3px solid ${COLORS.red}` : "1px solid transparent",
+                    borderRadius: 2,
+                    transition: "border-color 160ms ease",
+                    objectFit: "cover",
+                    width: "100%",
+                  }}
                 />
 
                 {quantity === 0 ? (
                   <Button
                     variant="outlined"
-                    startIcon={<AddShoppingCartIcon />}
-                    color="warning"
+                    startIcon={<AddShoppingCartIcon sx={{color: COLORS.red}}/>}
                     sx={{
                       position: "absolute",
                       bottom: -20,
                       left: "50%",
                       transform: "translateX(-50%)",
-                      borderRadius: "50px",
-                      width: "80%",
-                      backgroundColor: "hsl(20, 50%, 98%)",
+                      borderRadius: 50,
+                      width: "60%",
+                      bgcolor: COLORS.rose50,
+                      borderColor: COLORS.red,
+                      color: COLORS.textDark,
+                      textTransform: "none",
+                      fontWeight: 700,
+                      "&:hover": { color: COLORS.red },
                     }}
                     onClick={() => handleAdd(item.id)}
                   >
@@ -117,55 +151,61 @@ export default function ProductCard({ cart, setCart, products }: Props) {
                       display: "flex",
                       alignItems: "center",
                       justifyContent: "space-between",
-                      borderRadius: "50px",
-                      width: "80%",
-                      backgroundColor: "#c2410c",
+                      borderRadius: 50,
+                      width: "60%",
+                      backgroundColor: COLORS.red,
                       color: "white",
                       px: 2,
+                      py: 0.75,
                     }}
                   >
-                    <IconButton onClick={() => handleDecrease(item.id)} sx={{ color: "white" }}>
-                      <RemoveIcon                       
+                    <IconButton
+                      onClick={() => handleDecrease(item.id)}
                       sx={{
-                        borderRadius: "50%",
-                        border: "1px solid white",
+                        color: "white",
+                        border: "1px solid white", borderRadius: "50px",
+                        p: 0.5,
                         "&:hover": {
-                          backgroundColor: "white",
-                          color: "#c2410c",
+                          bgcolor: "white",
+                          color: COLORS.red,
                         },
-                      }}/>
+                      }}
+                    >
+                      <RemoveIcon sx={{ fontSize: 10 }} />
                     </IconButton>
-                    <Typography sx={{ color: "white", mx: 1 }}>{quantity}</Typography>
-                    <IconButton onClick={() => handleIncrease(item.id)} sx={{ color: "white" }}>
-                      <AddIcon 
-                                            sx={{
-                        borderRadius: "50%",
-                        border: "1px solid white",
+                    <Typography sx={{ color: "white", mx: 1, fontWeight: 700 }}>{quantity}</Typography>
+                    <IconButton onClick={() => handleIncrease(item.id)}
+                      sx={{
+                        color: "white",
+                        border: "1px solid white", borderRadius: "50px",
+                        p: 0.5,
                         "&:hover": {
-                          backgroundColor: "white",
-                          color: "#c2410c",
+                          bgcolor: "white",
+                          color: COLORS.red,
+
                         },
-                      }}/>
+                      }}>
+                      <AddIcon sx={{ fontSize: 10 }} />
                     </IconButton>
                   </Box>
                 )}
               </Box>
 
-              <CardContent>
-                <Typography variant="body2" color="text.secondary" sx={{ pt: 2 }}>
+              <CardContent sx={{ p: 1.5 }}>
+                <Typography variant="body2" color="text.secondary" sx={{ fontSize: 13, pt: 3 }}>
                   {item.category}
                 </Typography>
-                <Typography variant="h6" sx={{ fontWeight: "bold" }}>
+                <Typography sx={{ fontSize: 16, fontWeight: 600, color: COLORS.textDark, mt: 0.5 }}>
                   {item.name}
                 </Typography>
-                <Typography variant="subtitle1" color="error">
+                <Typography variant="subtitle1" color="error" sx={{ mt: 0.5, fontWeight: 700 }}>
                   ${item.price.toFixed(2)}
                 </Typography>
               </CardContent>
             </Card>
           );
         })}
-      </div>
+      </Box>
     </>
   );
 }

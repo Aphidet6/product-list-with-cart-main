@@ -30,6 +30,12 @@ type CartProps = {
   products: Product[];
 };
 
+const COLORS = {
+  red: "hsl(14, 86%, 42%)",
+  rose50: "hsl(20, 50%, 98%)",
+  textDark: "hsl(14, 65%, 9%)",
+};
+
 export default function Cart({ cart, setCart, products }: CartProps) {
   const [open, setOpen] = useState(false);
 
@@ -42,6 +48,7 @@ export default function Cart({ cart, setCart, products }: CartProps) {
     const p = productFor(e.id);
     return sum + (p ? p.price * e.qty : 0);
   }, 0);
+
 
   const remove = (id: number) =>
     setCart((prev) => {
@@ -57,17 +64,18 @@ export default function Cart({ cart, setCart, products }: CartProps) {
     return (
       <Card
         sx={{
-          minWidth: 250,
+          minWidth: 360,
           borderRadius: 2,
-          backgroundColor: "#fff",
+          backgroundColor: '#fff',
           boxShadow: "none",
           p: 2,
+          mx: 2
         }}
       >
         <CardContent>
           <Typography
             variant="h6"
-            sx={{ fontWeight: "bold", color: "#c2410c", mb: 2 }}
+            sx={{ fontWeight: "bold", color: COLORS.red, mb: 2 }}
           >
             Your Cart ({totalQty})
           </Typography>
@@ -96,12 +104,10 @@ export default function Cart({ cart, setCart, products }: CartProps) {
   // Populated cart UI
   return (
     <>
-      <Box sx={{ p: 2, maxWidth: 360, backgroundColor: "#fff" }}>
-        <Typography variant="h6" sx={{ fontWeight: "bold", mb: 1 }}>
+      <Box sx={{ p: 2, minWidth: 360, bgcolor: "#fff", borderRadius: 2 }}>
+        <Typography variant="h6" sx={{ fontWeight: "bold", mb: 1, color: COLORS.red }}>
           Your Cart ({totalQty})
         </Typography>
-
-        <Divider />
 
         <List>
           {entries.map((e) => {
@@ -113,43 +119,46 @@ export default function Cart({ cart, setCart, products }: CartProps) {
                 key={e.id}
                 sx={{ display: "flex", justifyContent: "space-between", alignItems: "flex-start", py: 1 }}
                 secondaryAction={
-                  <IconButton onClick={() => remove(e.id)} size="small" sx={{ border: "1px solid #ddd" }}>
-                    <CloseIcon fontSize="small" />
+                  <IconButton onClick={() => remove(e.id)} size="small" sx={{ border: "1px solid hsl(14, 86%, 42%)", "&:hover": { borderColor: COLORS.textDark, color: COLORS.textDark } }}>
+                    <CloseIcon sx={{fontSize: "10px", color: COLORS.red }} />
                   </IconButton>
                 }
+                
               >
                 <Box sx={{ width: "100%" }}>
                   <ListItemText
-                    primary={<Typography sx={{ fontWeight: 600 }}>{p.name}</Typography>}
+                    primary={<Typography sx={{ fontWeight: 600, fontSize: 16 }}>{p.name}</Typography>}
                     secondary={
                       <Box sx={{ display: "flex", alignItems: "center", mt: 0.5, flexWrap: "wrap" }}>
                         <Box sx={{ display: "flex", alignItems: "center", mr: 1 }}>
-                          <Typography sx={{ mx: 0.5 }}>x{e.qty}</Typography>
+                          <Typography sx={{ mx: 0.5, color: COLORS.red }}>x{e.qty}</Typography>
                         </Box>
 
                         <Typography sx={{ color: "text.secondary", mr: 1 }}>
                           @${p.price.toFixed(2)}
                         </Typography>
 
-                        <Typography sx={{ fontWeight: 600 }}>
+                        <Typography sx={{ fontWeight: 700 }}>
                           ${lineTotal.toFixed(2)}
                         </Typography>
                       </Box>
                     }
                   />
-                  <Divider />
+                  <Divider sx={{ mt: 1, width: "112%"}} />
                 </Box>
               </ListItem>
             );
           })}
+          
         </List>
+        
 
         <Box sx={{ display: "flex", justifyContent: "space-between", alignItems: "center", mb: 1 }}>
           <Typography>Order Total</Typography>
-          <Typography sx={{ fontWeight: 700, fontSize: 30 }}>${totalPrice.toFixed(2)}</Typography>
+          <Typography sx={{ fontWeight: 700, fontSize: 20 }}>${totalPrice.toFixed(2)}</Typography>
         </Box>
 
-        <Box sx={{ display: "flex", alignItems: "center", justifyContent: "center", mb: 2 , backgroundColor: "hsl(20, 50%, 98%)"}}>
+        <Box sx={{ display: "flex", alignItems: "center", justifyContent: "center", mb: 2, bgcolor: COLORS.rose50, py: 1, borderRadius: 1 }}>
           <Box component="img" src={CarbonNeutralIcon} alt="carbon" sx={{ width: 18, height: 18, mr: 1 }} />
           <Typography>
             This is a <strong>carbon‑neutral</strong> delivery
@@ -159,8 +168,7 @@ export default function Cart({ cart, setCart, products }: CartProps) {
         <Box sx={{ textAlign: "center" }}>
           <Button
             variant="contained"
-            color="error"
-            sx={{ borderRadius: 50, px: 4 }}
+            sx={{ borderRadius: 50, px: 4, bgcolor: COLORS.red, "&:hover": { bgcolor: "hsl(5, 71%, 35%)" } }}
             onClick={() => setOpen(true)}
           >
             Confirm Order

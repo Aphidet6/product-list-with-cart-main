@@ -28,13 +28,13 @@ export default function App() {
       <Stack
       direction={{ xs: "column", sm: "row", md: "row" }}
       spacing={2}
-      sx={{ padding: '20px', width: '100%', maxWidth: 1200 }}
+      sx={{ padding: '20px', width: '100%', maxWidth: 1440 }}
       justifyContent="center"
       >
-      <Item sx={{ width: { xs: '100%', sm: '75%' }, justifyContent: 'center' }}>
+      <Item sx={{ width: { xs: '100%', sm: '70%' }, justifyContent: 'center' }}>
         <ProductCard cart={cart} setCart={setCart} products={products} />
       </Item>
-      <Item sx={{ width: { xs: '100%', sm: '25%' }, justifyContent: 'center' }}>
+      <Item sx={{ width: { xs: '100%', sm: '30%' }, justifyContent: 'center' }}>
         <Cart cart={cart} setCart={setCart} products={products} />
       </Item>
       </Stack>
